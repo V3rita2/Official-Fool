@@ -3,7 +3,8 @@ import discord
 from dotenv import load_dotenv
 from discord.ext import commands
 import random
-import 
+# other files with commands
+
 
 
 load_dotenv()
@@ -27,5 +28,14 @@ async def hello(ctx):
 
     response = random.choice(greet_options)
     await ctx.send(response)
+
+@bot.command(name='Goose', help='the geese are unstoppable, they shall be the end of all things.')
+async def goose(ctx, message):
+    goose_num = random.randint(25, 2048)
+
+    response = (f'Alas, the Geese have taken another victim. {message.author.ping} has been obliterated by {goose_num} Geese! Will not some brave hero come forth, and cause the Geese to Cease?')
+    await ctx.send(response)
+
+
 
 bot.run(TOKEN)
