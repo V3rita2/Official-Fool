@@ -1,23 +1,23 @@
 import os
 import discord
 from dotenv import load_dotenv
+from discord.ext import commands
 import random
+import 
 
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-client = discord.Client()
+bot = commands.Bot(command_prefix= '@.@')
 
-@client.event
+@bot.event
 async def on_ready():
-    print(f'{client.user} has connected to discord')
+    print(f'{bot.user.name} has connected to discord')
 
 
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
+@bot.command(name='hello', help='says hello in a very friendly manner and most certainly doesnt ask for your teeth')
+async def hello(ctx):
 
     greet_options = [
         "hello",
@@ -25,8 +25,7 @@ async def on_message(message):
         "IM ASSBELLS MCGEE GIMME YOUR TEETH",
     ]
 
-    if message.content == 'greet the fool':
-        response = random.choice(greet_options)
-        await message.channel.send(response)
+    response = random.choice(greet_options)
+    await ctx.send(response)
 
-client.run(TOKEN)
+bot.run(TOKEN)
