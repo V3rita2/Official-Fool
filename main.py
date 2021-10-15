@@ -9,8 +9,11 @@ import random
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
+#bot intents
+intents = discord.Intents().default()
+intents.members = True
 
-bot = commands.Bot(command_prefix= ['F!', 'f!'])
+bot = commands.Bot(command_prefix= ['F!', 'f!'], intents=intents)
 
 @bot.event
 async def on_ready():
@@ -82,22 +85,39 @@ async def clear (ctx, amount=1):
 async def kick(ctx, member : discord.Member, *, reason=None):
     await member.kick(reason=reason)
 
-# we fuck around and find out
+# we fuck around and find out (closed until I can figure out how to limit useability)
+# @bot.command()
+# async def ban(ctx, member : discord.Member, *, reason=None):
+#     await member.ban(reason=reason)
+
+# # we unfuck
+# @bot.command()
+# async def unban(ctx, *, member):
+#     banned_users = await ctx.guild.bans()
+#     member_name, member_discriminator = member.split('#')
+
+#     for ban_entry in banned_users:
+#         user = ban_entry.user
+
+#         if (user.name, user.discriminator) == (member_name, member_discriminator):
+#             await ctx.guild.unban(user)
+#             return
+
+#try new shit
+@bot.command(aliases=['2ping'])
+async def doubleping(ctx, member : discord.Member):
+    await ctx.send(f'pong! {member.mention}')
+
 @bot.command()
-async def ban(ctx, member : discord.Member, *, reason=None):
-    await member.ban(reason=reason)
+async def ping(ctx, *, member):
+    users = await discord.Guild.members()
 
-# we unfuck
-@bot.command()
-async def unban(ctx, *, member):
-    banned_users = await ctx.guild.bans()
-    member_name, member_discriminator = member.split('#')
+    for i in users:
+        user = users.user
 
-    for ban_entry in banned_users:
-        user = ban_entry.user
-
-        if (user.name, user.discriminator) == (member_name, member_discriminator):
-            await ctx.guild.unban(user)
+        if user.name == member:
+            await ctx.send(f'pong! {user.mention}')
+            return
 
 
 bot.run(TOKEN)
